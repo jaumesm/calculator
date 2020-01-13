@@ -3,13 +3,20 @@ package com.camaiot.calculator.web.model;
 import java.math.BigDecimal;
 
 public class PriceRequest {
-    private String itemDescription;
 
+    private String itemDescription;
     private BigDecimal itemPrice;
     private Integer numberOfItems;
     private String state;
 
     public PriceRequest() {
+    }
+
+    public PriceRequest(String itemDescription, BigDecimal itemPrice, Integer numberOfItems, String state) {
+        this.itemDescription = itemDescription;
+        this.itemPrice = itemPrice;
+        this.numberOfItems = numberOfItems;
+        this.state = state;
     }
 
     public String getItemDescription() {
