@@ -211,4 +211,42 @@ class PricingImplTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void TobaccoAtRES(){
+        when(stateTaxService.getTaxPercentage("RES")).thenReturn(new BigDecimal("21.5"));
+        when(discountService.getDiscount(any())).thenReturn(null);
+        PriceRequest priceRequest = new PriceRequest("tobacco", new BigDecimal("6"), 3, "RES");
+        /*
+        base = (itemPrice * numberOfItems)
+        expected = base + (base * (stateTaxPercentage/100)) + (base * (specialTaxPercentage/100))
+         */
+        BigDecimal expected = new BigDecimal("30.87");
+        BigDecimal actual = pricing.calculateTotalAmount(
+            priceRequest.getItemDescription(),
+            priceRequest.getItemPrice(),
+            priceRequest.getNumberOfItems(),
+            priceRequest.getState()
+        );
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void TobaccoAtBAL(){
+        when(stateTaxService.getTaxPercentage("BAL")).thenReturn(new BigDecimal("18.3"));
+        when(discountService.getDiscount(any())).thenReturn(null);
+        PriceRequest priceRequest = new PriceRequest("tobacco", new BigDecimal("6"), 3, "RES");
+        /*
+        base = (itemPrice * numberOfItems)
+        expected = base + (base * (stateTaxPercentage/100)) + (base * (specialTaxPercentage/100))
+         */
+        BigDecimal expected = new BigDecimal("30.294");
+        BigDecimal actual = pricing.calculateTotalAmount(
+            priceRequest.getItemDescription(),
+            priceRequest.getItemPrice(),
+            priceRequest.getNumberOfItems(),
+            priceRequest.getState()
+        );
+        assertEquals(expected, actual);
+    }
+
 }
