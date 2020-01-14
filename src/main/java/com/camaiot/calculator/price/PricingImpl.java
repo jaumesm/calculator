@@ -56,11 +56,6 @@ public class PricingImpl implements Pricing {
         return amount.multiply(taxPercentage.divide(ONE_HUNDRED));
     }
 
-//    BigDecimal stateTaxPercentage = stateTaxService.getTaxPercentage(state);
-//    /* total = (itemPrice * numberOfItems) * (1 + (stateTaxPercentage / 100)) */
-//    BigDecimal stateTaxIncrement = BigDecimal.ONE.add(stateTaxPercentage.divide(ONE_HUNDRED));
-//    BigDecimal total = itemPrice.multiply(BigDecimal.valueOf(numberOfItems)).multiply(stateTaxIncrement);
-
     private BigDecimal applyDiscount(BigDecimal amount) {
         BigDecimal discountPercentage = discountService.getDiscount(amount);
         if (discountPercentage != null) {
