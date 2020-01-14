@@ -106,4 +106,99 @@ class PricingImplTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void calculateTotalAmountWith3Discount(){
+        when(stateTaxService.getTaxPercentage("RES")).thenReturn(new BigDecimal("21.5"));
+        PriceRequest priceRequest = new PriceRequest("smartphone", new BigDecimal("1000"), 1, "RES");
+        /*
+        3% discountPercentage when price > 1000
+        priceWithStateTax = (itemPrice * numberOfItems) * (1 + (stateTaxPercentage / 100))
+        expected = (priceWithStateTax) * (1 - (discountPercentage / 100))
+         */
+        BigDecimal expected = new BigDecimal("1178.55");
+        BigDecimal actual = pricing.calculateTotalAmount(
+            priceRequest.getItemDescription(),
+            priceRequest.getItemPrice(),
+            priceRequest.getNumberOfItems(),
+            priceRequest.getState()
+        );
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void calculateTotalAmountWith7Discount(){
+        when(stateTaxService.getTaxPercentage("RES")).thenReturn(new BigDecimal("21.5"));
+        PriceRequest priceRequest = new PriceRequest("smartphone", new BigDecimal("1000"), 2, "RES");
+        /*
+        7% discountPercentage when price > 2000
+        priceWithStateTax = (itemPrice * numberOfItems) * (1 + (stateTaxPercentage / 100))
+        expected = (priceWithStateTax) * (1 - (discountPercentage / 100))
+         */
+        BigDecimal expected = new BigDecimal("2259.9");
+        BigDecimal actual = pricing.calculateTotalAmount(
+            priceRequest.getItemDescription(),
+            priceRequest.getItemPrice(),
+            priceRequest.getNumberOfItems(),
+            priceRequest.getState()
+        );
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void calculateTotalAmountWith15Discount(){
+        when(stateTaxService.getTaxPercentage("TER")).thenReturn(new BigDecimal("0.5"));
+        PriceRequest priceRequest = new PriceRequest("smartphone", new BigDecimal("1000"), 5, "TER");
+        /*
+        15% discountPercentage when price > 5000
+        priceWithStateTax = (itemPrice * numberOfItems) * (1 + (stateTaxPercentage / 100))
+        expected = (priceWithStateTax) * (1 - (discountPercentage / 100))
+         */
+        BigDecimal expected = new BigDecimal("4271.25");
+        BigDecimal actual = pricing.calculateTotalAmount(
+            priceRequest.getItemDescription(),
+            priceRequest.getItemPrice(),
+            priceRequest.getNumberOfItems(),
+            priceRequest.getState()
+        );
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void calculateTotalAmountWith19Discount(){
+        when(stateTaxService.getTaxPercentage("RES")).thenReturn(new BigDecimal("21.5"));
+        PriceRequest priceRequest = new PriceRequest("smartphone", new BigDecimal("1000"), 7, "RES");
+        /*
+        19% discountPercentage when price > 7500
+        priceWithStateTax = (itemPrice * numberOfItems) * (1 + (stateTaxPercentage / 100))
+        expected = (priceWithStateTax) * (1 - (discountPercentage / 100))
+         */
+        BigDecimal expected = new BigDecimal("6889.05");
+        BigDecimal actual = pricing.calculateTotalAmount(
+            priceRequest.getItemDescription(),
+            priceRequest.getItemPrice(),
+            priceRequest.getNumberOfItems(),
+            priceRequest.getState()
+        );
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void calculateTotalAmountWith25Discount(){
+        when(stateTaxService.getTaxPercentage("RES")).thenReturn(new BigDecimal("21.5"));
+        PriceRequest priceRequest = new PriceRequest("smartphone", new BigDecimal("1000"), 10, "RES");
+        /*
+        25% discountPercentage when price > 10000
+        priceWithStateTax = (itemPrice * numberOfItems) * (1 + (stateTaxPercentage / 100))
+        expected = (priceWithStateTax) * (1 - (discountPercentage / 100))
+         */
+        BigDecimal expected = new BigDecimal("9112.5");
+        BigDecimal actual = pricing.calculateTotalAmount(
+            priceRequest.getItemDescription(),
+            priceRequest.getItemPrice(),
+            priceRequest.getNumberOfItems(),
+            priceRequest.getState()
+        );
+        assertEquals(expected, actual);
+    }
+
 }
