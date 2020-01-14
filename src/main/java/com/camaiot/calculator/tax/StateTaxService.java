@@ -23,7 +23,7 @@ public class StateTaxService {
         if (stateTax != null) {
             return stateTax.getTaxPercentage();
         } else {
-            throw new BadRequestException("Invalid state");
+            throw new BadRequestException("state: invalid value");
         }
     }
 }
