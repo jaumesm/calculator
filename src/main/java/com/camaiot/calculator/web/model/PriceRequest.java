@@ -1,12 +1,22 @@
 package com.camaiot.calculator.web.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 public class PriceRequest {
 
+    @NotNull
     private String itemDescription;
+
+    @NotNull
     private BigDecimal itemPrice;
+
+    @NotNull
     private Integer numberOfItems;
+
+    @NotNull
+    @Size(min=3, max=3)
     private String state;
 
     public PriceRequest() {

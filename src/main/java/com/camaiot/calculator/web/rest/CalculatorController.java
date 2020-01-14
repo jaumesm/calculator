@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 
 @RestController
@@ -21,7 +22,7 @@ public class CalculatorController {
     }
 
     @GetMapping("/price")
-    public BigDecimal calculateTotalAmount(PriceRequest priceRequest) {
+    public BigDecimal calculateTotalAmount(@Valid PriceRequest priceRequest) {
         return pricing.calculateTotalAmount(
             priceRequest.getItemDescription(),
             priceRequest.getItemPrice(),
