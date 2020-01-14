@@ -1,6 +1,7 @@
 package com.camaiot.calculator.price;
 
 import com.camaiot.calculator.discount.DiscountService;
+import com.camaiot.calculator.tax.SpecialTaxService;
 import com.camaiot.calculator.tax.StateTaxService;
 import com.camaiot.calculator.web.model.PriceRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,18 +23,22 @@ class PricingImplTest {
     private StateTaxService stateTaxService;
 
     @Mock
+    private SpecialTaxService specialTaxService;
+
+    @Mock
     private DiscountService discountService;
 
     private PricingImpl pricing;
 
     @BeforeEach
     void setUp() {
-        pricing = new PricingImpl(stateTaxService, discountService);
+        pricing = new PricingImpl(stateTaxService, specialTaxService, discountService);
     }
 
     @Test
     void calculateTotalAmountForBALState() {
         when(stateTaxService.getTaxPercentage("BAL")).thenReturn(new BigDecimal("18.3"));
+        when(specialTaxService.getTaxPercentage(any())).thenReturn(null);
         when(discountService.getDiscount(any())).thenReturn(null);
         PriceRequest priceRequest = new PriceRequest("book", new BigDecimal("11.25"), 2, "BAL");
         /* expected = (itemPrice * numberOfItems) * (1 + (stateTaxPercentage / 100)) */
@@ -51,6 +56,7 @@ class PricingImplTest {
     @Test
     void calculateTotalAmountForCANState() {
         when(stateTaxService.getTaxPercentage("CAN")).thenReturn(new BigDecimal("4.7"));
+        when(specialTaxService.getTaxPercentage(any())).thenReturn(null);
         when(discountService.getDiscount(any())).thenReturn(null);
         PriceRequest priceRequest = new PriceRequest("book", new BigDecimal("11.25"), 2, "CAN");
         /* expected = (itemPrice * numberOfItems) * (1 + (stateTaxPercentage / 100)) */
@@ -68,6 +74,7 @@ class PricingImplTest {
     @Test
     void calculateTotalAmountForCYMState() {
         when(stateTaxService.getTaxPercentage("CYM")).thenReturn(new BigDecimal("8.1"));
+        when(specialTaxService.getTaxPercentage(any())).thenReturn(null);
         when(discountService.getDiscount(any())).thenReturn(null);
         PriceRequest priceRequest = new PriceRequest("book", new BigDecimal("11.25"), 2, "CYM");
         /* expected = (itemPrice * numberOfItems) * (1 + (stateTaxPercentage / 100)) */
@@ -85,6 +92,7 @@ class PricingImplTest {
     @Test
     void calculateTotalAmountForTERState() {
         when(stateTaxService.getTaxPercentage("TER")).thenReturn(new BigDecimal("0.5"));
+        when(specialTaxService.getTaxPercentage(any())).thenReturn(null);
         when(discountService.getDiscount(any())).thenReturn(null);
         PriceRequest priceRequest = new PriceRequest("book", new BigDecimal("11.25"), 2, "TER");
         /* expected = (itemPrice * numberOfItems) * (1 + (stateTaxPercentage / 100)) */
@@ -102,6 +110,7 @@ class PricingImplTest {
     @Test
     void calculateTotalAmountForRESState() {
         when(stateTaxService.getTaxPercentage("RES")).thenReturn(new BigDecimal("21.5"));
+        when(specialTaxService.getTaxPercentage(any())).thenReturn(null);
         when(discountService.getDiscount(any())).thenReturn(null);
         PriceRequest priceRequest = new PriceRequest("book", new BigDecimal("11.25"), 2, "RES");
         /* expected = (itemPrice * numberOfItems) * (1 + (stateTaxPercentage / 100)) */
@@ -119,6 +128,7 @@ class PricingImplTest {
     @Test
     void calculateTotalAmountWith3Discount(){
         when(stateTaxService.getTaxPercentage("RES")).thenReturn(new BigDecimal("21.5"));
+        when(specialTaxService.getTaxPercentage(any())).thenReturn(null);
         when(discountService.getDiscount(any())).thenReturn(new BigDecimal("3"));
         PriceRequest priceRequest = new PriceRequest("smartphone", new BigDecimal("1000"), 1, "RES");
         /*
@@ -138,6 +148,7 @@ class PricingImplTest {
     @Test
     void calculateTotalAmountWith7Discount(){
         when(stateTaxService.getTaxPercentage("RES")).thenReturn(new BigDecimal("21.5"));
+        when(specialTaxService.getTaxPercentage(any())).thenReturn(null);
         when(discountService.getDiscount(any())).thenReturn(new BigDecimal("7"));
         PriceRequest priceRequest = new PriceRequest("smartphone", new BigDecimal("1000"), 2, "RES");
         /*
@@ -157,6 +168,7 @@ class PricingImplTest {
     @Test
     void calculateTotalAmountWith15Discount(){
         when(stateTaxService.getTaxPercentage("TER")).thenReturn(new BigDecimal("0.5"));
+        when(specialTaxService.getTaxPercentage(any())).thenReturn(null);
         when(discountService.getDiscount(any())).thenReturn(new BigDecimal("15"));
         PriceRequest priceRequest = new PriceRequest("smartphone", new BigDecimal("1000"), 5, "TER");
         /*
@@ -176,6 +188,7 @@ class PricingImplTest {
     @Test
     void calculateTotalAmountWith19Discount(){
         when(stateTaxService.getTaxPercentage("RES")).thenReturn(new BigDecimal("21.5"));
+        when(specialTaxService.getTaxPercentage(any())).thenReturn(null);
         when(discountService.getDiscount(any())).thenReturn(new BigDecimal("19"));
         PriceRequest priceRequest = new PriceRequest("smartphone", new BigDecimal("1000"), 7, "RES");
         /*
@@ -195,6 +208,7 @@ class PricingImplTest {
     @Test
     void calculateTotalAmountWith25Discount(){
         when(stateTaxService.getTaxPercentage("RES")).thenReturn(new BigDecimal("21.5"));
+        when(specialTaxService.getTaxPercentage(any())).thenReturn(null);
         when(discountService.getDiscount(any())).thenReturn(new BigDecimal("25"));
         PriceRequest priceRequest = new PriceRequest("smartphone", new BigDecimal("1000"), 10, "RES");
         /*
@@ -214,6 +228,7 @@ class PricingImplTest {
     @Test
     void TobaccoAtRES(){
         when(stateTaxService.getTaxPercentage("RES")).thenReturn(new BigDecimal("21.5"));
+        when(specialTaxService.getTaxPercentage("tobacco")).thenReturn(new BigDecimal("50"));
         when(discountService.getDiscount(any())).thenReturn(null);
         PriceRequest priceRequest = new PriceRequest("tobacco", new BigDecimal("6"), 3, "RES");
         /*
@@ -233,8 +248,9 @@ class PricingImplTest {
     @Test
     void TobaccoAtBAL(){
         when(stateTaxService.getTaxPercentage("BAL")).thenReturn(new BigDecimal("18.3"));
+        when(specialTaxService.getTaxPercentage("tobacco")).thenReturn(new BigDecimal("50"));
         when(discountService.getDiscount(any())).thenReturn(null);
-        PriceRequest priceRequest = new PriceRequest("tobacco", new BigDecimal("6"), 3, "RES");
+        PriceRequest priceRequest = new PriceRequest("tobacco", new BigDecimal("6"), 3, "BAL");
         /*
         base = (itemPrice * numberOfItems)
         expected = base + (base * (stateTaxPercentage/100)) + (base * (specialTaxPercentage/100))
